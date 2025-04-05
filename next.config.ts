@@ -4,4 +4,11 @@ const nextConfig: NextConfig = {
   /* config options here */
 };
 
-export default nextConfig;
+
+const {
+  createVanillaExtractPlugin,
+  // eslint-disable-next-line @typescript-eslint/no-require-imports
+} = require('@vanilla-extract/next-plugin');
+const withVanillaExtract = createVanillaExtractPlugin();
+
+export default withVanillaExtract(nextConfig);
