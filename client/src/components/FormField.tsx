@@ -1,10 +1,18 @@
 import React from 'react';
+
+import { registerPlugin } from 'filepond';
+import FilePondPluginImageExifOrientation from 'filepond-plugin-image-exif-orientation';
+import FilePondPluginImagePreview from 'filepond-plugin-image-preview';
+import { Edit, X, Plus } from 'lucide-react';
+import { FilePond } from 'react-filepond';
 import {
   ControllerRenderProps,
   FieldValues,
   useFormContext,
   useFieldArray,
 } from 'react-hook-form';
+
+import { Button } from '@/components/ui/button';
 import {
   FormControl,
   FormField,
@@ -13,8 +21,6 @@ import {
   FormMessage,
 } from '@/components/ui/form';
 import { Input } from '@/components/ui/input';
-import { Button } from '@/components/ui/button';
-import { Textarea } from '@/components/ui/textarea';
 import {
   Select,
   SelectContent,
@@ -23,12 +29,8 @@ import {
   SelectValue,
 } from '@/components/ui/select';
 import { Switch } from '@/components/ui/switch';
-import { Edit, X, Plus } from 'lucide-react';
-import { registerPlugin } from 'filepond';
-import { FilePond } from 'react-filepond';
+import { Textarea } from '@/components/ui/textarea';
 import 'filepond/dist/filepond.min.css';
-import FilePondPluginImagePreview from 'filepond-plugin-image-preview';
-import FilePondPluginImageExifOrientation from 'filepond-plugin-image-exif-orientation';
 import 'filepond-plugin-image-preview/dist/filepond-plugin-image-preview.css';
 
 registerPlugin(FilePondPluginImageExifOrientation, FilePondPluginImagePreview);
@@ -77,7 +79,7 @@ export const CustomFormField: React.FC<FormFieldProps> = ({
   const { control } = useFormContext();
 
   const renderFormControl = (
-    field: ControllerRenderProps<FieldValues, string>
+    field: ControllerRenderProps<FieldValues, string>,
   ) => {
     switch (type) {
       case 'textarea':
