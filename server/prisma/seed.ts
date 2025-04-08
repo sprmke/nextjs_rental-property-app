@@ -1,6 +1,6 @@
-import { PrismaClient, Prisma } from "@prisma/client";
-import fs from "fs";
-import path from "path";
+import { PrismaClient, Prisma } from '@prisma/client';
+import fs from 'fs';
+import path from 'path';
 
 const prisma = new PrismaClient();
 
@@ -39,7 +39,7 @@ async function resetSequence(modelName: string) {
     prisma[modelName as keyof PrismaClient] as any
   ).findMany({
     select: { id: true },
-    orderBy: { id: "desc" },
+    orderBy: { id: 'desc' },
     take: 1,
   });
 
@@ -76,16 +76,16 @@ async function deleteAllData(orderedFileNames: string[]) {
 }
 
 async function main() {
-  const dataDirectory = path.join(__dirname, "seedData");
+  const dataDirectory = path.join(__dirname, 'seedData');
 
   const orderedFileNames = [
-    "location.json", // No dependencies
-    "manager.json", // No dependencies
-    "property.json", // Depends on location and manager
-    "tenant.json", // No dependencies
-    "lease.json", // Depends on property and tenant
-    "application.json", // Depends on property and tenant
-    "payment.json", // Depends on lease
+    'location.json', // No dependencies
+    'manager.json', // No dependencies
+    'property.json', // Depends on location and manager
+    'tenant.json', // No dependencies
+    'lease.json', // Depends on property and tenant
+    'application.json', // Depends on property and tenant
+    'payment.json', // Depends on lease
   ];
 
   // Delete all existing data
@@ -94,13 +94,13 @@ async function main() {
   // Seed data
   for (const fileName of orderedFileNames) {
     const filePath = path.join(dataDirectory, fileName);
-    const jsonData = JSON.parse(fs.readFileSync(filePath, "utf-8"));
+    const jsonData = JSON.parse(fs.readFileSync(filePath, 'utf-8'));
     const modelName = toPascalCase(
       path.basename(fileName, path.extname(fileName))
     );
     const modelNameCamel = toCamelCase(modelName);
 
-    if (modelName === "Location") {
+    if (modelName === 'Location') {
       await insertLocationData(jsonData);
     } else {
       const model = (prisma as any)[modelNameCamel];
