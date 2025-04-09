@@ -146,25 +146,6 @@ body,
 .marker-popup-price-unit {
   @apply text-xs text-primary-500 font-normal;
 }
-
-/* scrollbar styling */
-::-webkit-scrollbar {
-  width: 5px;
-}
-
-::-webkit-scrollbar-track {
-  background: transparent;
-}
-
-::-webkit-scrollbar-thumb {
-  @apply bg-primary-200;
-  border-radius: 3px;
-}
-
-::-webkit-scrollbar-thumb:hover {
-  @apply bg-primary-300;
-}
-
 @layer base {
   * {
     @apply border-border;
