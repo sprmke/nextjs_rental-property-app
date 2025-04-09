@@ -58,20 +58,12 @@ export const withToast = async <T>(
   }
 };
 
+export type IdToken = { payload?: { email?: string } };
 export const createNewUserInDatabase = async (
   user: AuthUser,
-  idToken: { payload?: { email?: string } },
+  idToken: IdToken,
   userRole: string,
-  fetchWithBQ: (options: {
-    url: string;
-    method: string;
-    body: {
-      cognitoId: string;
-      name: string;
-      email: string;
-      phoneNumber: string;
-    };
-  }) => Promise<{ data?: any; error?: any }>
+  fetchWithBQ: any
 ) => {
   const createEndpoint =
     userRole?.toLowerCase() === 'manager' ? '/managers' : '/tenants';

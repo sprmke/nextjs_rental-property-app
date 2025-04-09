@@ -1,7 +1,7 @@
 import { fetchAuthSession, getCurrentUser } from 'aws-amplify/auth';
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
 import { Tenant, Manager } from '@/types/prismaTypes';
-import { createNewUserInDatabase } from '@/lib/utils';
+import { createNewUserInDatabase, IdToken } from '@/lib/utils';
 
 export const api = createApi({
   baseQuery: fetchBaseQuery({
@@ -31,6 +31,7 @@ export const api = createApi({
           }/${user.userId}`;
 
           let userDetailsResponse = await fetchWithBaseQuery(endpoint);
+          console.log('userDetailsResponse::', userDetailsResponse);
 
           // If user doesn't exist, create new user
           if (
@@ -39,7 +40,7 @@ export const api = createApi({
           ) {
             userDetailsResponse = await createNewUserInDatabase(
               user,
-              idToken,
+              idToken as IdToken,
               userRole,
               fetchWithBaseQuery
             );
@@ -60,4 +61,4 @@ export const api = createApi({
   }),
 });
 
-export const {} = api;
+export const { useGetAuthUserQuery } = api;
