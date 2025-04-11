@@ -1,7 +1,7 @@
 import { fetchAuthSession, getCurrentUser } from 'aws-amplify/auth';
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
 import { Tenant, Manager } from '@/types/prismaTypes';
-import { createNewUserInDatabase, IdToken } from '@/lib/utils';
+import { createNewUserInDatabase, IdToken, withToast } from '@/lib/utils';
 
 export const api = createApi({
   baseQuery: fetchBaseQuery({
@@ -16,7 +16,7 @@ export const api = createApi({
     },
   }),
   reducerPath: 'api',
-  tagTypes: [],
+  tagTypes: ['Tenants', 'Managers'],
   endpoints: (build) => ({
     getAuthUser: build.query<User, void>({
       queryFn: async (_arg, _queryApi, _extraOptions, fetchWithBaseQuery) => {
@@ -58,7 +58,24 @@ export const api = createApi({
         }
       },
     }),
+    updateTenantSettings: build.mutation<
+      Tenant,
+      { cognitoId: string } & Partial<Tenant>
+    >({
+      query: ({ cognitoId, ...updatedTenant }) => ({
+        url: `tenants/${cognitoId}`,
+        method: 'PUT',
+        body: updatedTenant,
+      }),
+      invalidatesTags: (result) => [{ type: 'Tenants', id: result?.id }],
+      async onQueryStarted(_, { queryFulfilled }) {
+        await withToast(queryFulfilled, {
+          success: 'Settings updated successfully!',
+          error: 'Failed to update settings.',
+        });
+      },
+    }),
   }),
 });
 
-export const { useGetAuthUserQuery } = api;
+export const { useGetAuthUserQuery, useUpdateTenantSettingsMutation } = api;
