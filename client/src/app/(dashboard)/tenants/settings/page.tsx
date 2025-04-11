@@ -14,10 +14,9 @@ import SettingsForm from '@/components/SettingsForm';
 const TenantSettings = () => {
   const { data: authUser, isLoading: authLoading } = useGetAuthUserQuery();
 
-  const [updateTenantSettings, { isLoading: updateLoading }] =
-    useUpdateTenantSettingsMutation();
+  const [updateTenantSettings] = useUpdateTenantSettingsMutation();
 
-  if (authLoading || updateLoading)
+  if (authLoading)
     return (
       <div className="flex justify-center items-center h-screen">
         <Loader2 className="w-10 h-10 animate-spin opacity-50" />
