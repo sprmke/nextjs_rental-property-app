@@ -79,7 +79,7 @@ export const CustomFormField: React.FC<FormFieldProps> = ({
   const { control } = useFormContext();
 
   const renderFormControl = (
-    field: ControllerRenderProps<FieldValues, string>,
+    field: ControllerRenderProps<FieldValues, string>
   ) => {
     switch (type) {
       case 'textarea':
