@@ -243,6 +243,13 @@ export const createProperty = async (
             parseFloat(geocodingResponse.data[0]?.lat),
           ]
         : [0, 0];
+
+    // create location
+    const [location] = await prisma.$queryRaw<Location[]>`
+      INSERT INTO "Location" (address, city, state, country, "postalCode", coordinates)
+      VALUES (${address}, ${city}, ${state}, ${country}, ${postalCode}, ST_SetSRID(ST_MakePoint(${longitude}, ${latitude}), 4326))
+      RETURNING id, address, city, state, country, "postalCode", ST_AsText(coordinates) as coordinates;
+    `;
   } catch (error: any) {
     res
       .status(500)
