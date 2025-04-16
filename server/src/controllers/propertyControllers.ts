@@ -218,7 +218,16 @@ export const createProperty = async (
       })
     );
 
-    const geocodingUrl;
+    const geocodingUrl = `https://nominatim.openstreetmap.org/search?${new URLSearchParams(
+      {
+        street: address,
+        city,
+        country,
+        postalcode: postalCode,
+        format: 'json',
+        limit: '1',
+      }
+    ).toString()}`;
   } catch (error: any) {
     res
       .status(500)
