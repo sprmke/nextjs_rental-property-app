@@ -235,6 +235,14 @@ export const createProperty = async (
         'User-Agent': 'RentalPropertyApp (kamehome.azurenorth@gmail.com',
       },
     });
+
+    const [longitude, latitude] =
+      geocodingResponse.data[0]?.lon && geocodingResponse.data[0]?.lat
+        ? [
+            parseFloat(geocodingResponse.data[0]?.lon),
+            parseFloat(geocodingResponse.data[0]?.lat),
+          ]
+        : [0, 0];
   } catch (error: any) {
     res
       .status(500)
