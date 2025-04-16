@@ -250,6 +250,38 @@ export const createProperty = async (
       VALUES (${address}, ${city}, ${state}, ${country}, ${postalCode}, ST_SetSRID(ST_MakePoint(${longitude}, ${latitude}), 4326))
       RETURNING id, address, city, state, country, "postalCode", ST_AsText(coordinates) as coordinates;
     `;
+
+    // create property
+    const newProperty = await prisma.property.create({
+      data: {
+        ...propertyData,
+        photoUrls,
+        locationId: (location as any).id,
+        managerCognitoId,
+        amenities:
+          typeof propertyData.amenities === 'string'
+            ? propertyData.amenities.split(',')
+            : [],
+        highlights:
+          typeof propertyData.highlights === 'string'
+            ? propertyData.highlights.split(',')
+            : [],
+        isPetsAllowed: propertyData.isPetsAllowed === 'true',
+        isParkingIncluded: propertyData.isParkingIncluded === 'true',
+        pricePerMonth: parseFloat(propertyData.pricePerMonth),
+        securityDeposit: parseFloat(propertyData.securityDeposit),
+        applicationFee: parseFloat(propertyData.applicationFee),
+        beds: parseInt(propertyData.beds),
+        baths: parseFloat(propertyData.baths),
+        squareFeet: parseInt(propertyData.squareFeet),
+      },
+      include: {
+        location: true,
+        manager: true,
+      },
+    });
+
+    res.status(201).json(newProperty);
   } catch (error: any) {
     res
       .status(500)
