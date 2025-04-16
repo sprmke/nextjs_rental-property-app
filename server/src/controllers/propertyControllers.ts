@@ -3,7 +3,7 @@ import axios from 'axios';
 import { S3Client } from '@aws-sdk/client-s3';
 import { Upload } from '@aws-sdk/lib-storage';
 import { wktToGeoJSON } from '@terraformer/wkt';
-import { Prisma, PrismaClient } from '@prisma/client';
+import { Prisma, PrismaClient, Location } from '@prisma/client';
 
 const prisma = new PrismaClient();
 
@@ -256,7 +256,7 @@ export const createProperty = async (
       data: {
         ...propertyData,
         photoUrls,
-        locationId: (location as any).id,
+        locationId: location.id,
         managerCognitoId,
         amenities:
           typeof propertyData.amenities === 'string'
