@@ -1,8 +1,9 @@
 import { Request, Response } from 'express';
-import { Prisma, PrismaClient } from '@prisma/client';
-import { wktToGeoJSON } from '@terraformer/wkt';
+import axios from 'axios';
 import { S3Client } from '@aws-sdk/client-s3';
 import { Upload } from '@aws-sdk/lib-storage';
+import { wktToGeoJSON } from '@terraformer/wkt';
+import { Prisma, PrismaClient } from '@prisma/client';
 
 const prisma = new PrismaClient();
 
@@ -228,6 +229,12 @@ export const createProperty = async (
         limit: '1',
       }
     ).toString()}`;
+
+    const geocodingResponse = await axios.get(geocodingUrl, {
+      headers: {
+        'User-Agent': 'RentalPropertyApp (kamehome.azurenorth@gmail.com',
+      },
+    });
   } catch (error: any) {
     res
       .status(500)
