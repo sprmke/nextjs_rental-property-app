@@ -111,10 +111,8 @@ export const getManagerProperties = async (
 
     res.json(propertiesWithFormattedLocation);
   } catch (error: any) {
-    res
-      .status(500)
-      .json({
-        message: `Error retrieving manager properties: ${error.message}`,
-      });
+    res.status(500).json({
+      message: `Error retrieving manager properties: ${error.message}`,
+    });
   }
 };
