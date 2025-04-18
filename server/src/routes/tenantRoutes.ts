@@ -12,6 +12,6 @@ router.post('/', createTenant);
 router.get('/:cognitoId', getTenant);
 router.put('/:cognitoId', updateTenant);
 
-router.get('/:cognitoId/properties', getTenantProperties);
+router.get('/:cognitoId/tenant-properties', getTenantProperties);
 
 export default router;
