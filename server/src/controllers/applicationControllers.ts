@@ -170,3 +170,80 @@ export const createApplication = async (
       .json({ message: `Error creating application: ${error.message}` });
   }
 };
+
+export const updateApplicationStatus = async (
+  req: Request,
+  res: Response
+): Promise<void> => {
+  try {
+    const { id } = req.params;
+    const { status } = req.body;
+
+    const application = await prisma.application.findUnique({
+      where: { id: Number(id) },
+      include: {
+        property: true,
+        tenant: true,
+      },
+    });
+
+    if (!application) {
+      res.status(404).json({ message: 'Application not found.' });
+      return;
+    }
+
+    if (status === 'Approved') {
+      // Create a new lease
+      const newLease = await prisma.lease.create({
+        data: {
+          startDate: new Date(),
+          endDate: new Date(
+            new Date().setFullYear(new Date().getFullYear() + 1)
+          ),
+          rent: application.property.pricePerMonth,
+          deposit: application.property.securityDeposit,
+          propertyId: application.propertyId,
+          tenantCognitoId: application.tenantCognitoId,
+        },
+      });
+
+      // Update the property to connect the tenant
+      await prisma.property.update({
+        where: { id: application.propertyId },
+        data: {
+          tenants: {
+            connect: { cognitoId: application.tenantCognitoId },
+          },
+        },
+      });
+
+      // Update the application with the new lease ID
+      await prisma.application.update({
+        where: { id: Number(id) },
+        data: { status, leaseId: newLease.id },
+      });
+    } else {
+      // Update the application status (for both "Denied" and other statuses)
+      await prisma.application.update({
+        where: { id: Number(id) },
+        data: { status },
+      });
+    }
+
+    // Respond with the updated application details
+    const updatedApplication = await prisma.application.findUnique({
+      where: { id: Number(id) },
+      include: {
+        property: true,
+        tenant: true,
+        lease: true,
+      },
+    });
+
+    res.json(updatedApplication);
+  } catch (error: any) {
+    res
+      .status(500)
+      .json({ message: `Error updating application status: ${error.message}` });
+  }
+};
