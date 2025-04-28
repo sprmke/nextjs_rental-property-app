@@ -134,3 +134,19 @@ export const testUsers = {
   },
   managerRole: 'manager',
 };
+
+export const MIN_PRICES = [500, 1000, 1500, 2000, 3000, 5000, 10000];
+export const MAX_PRICES = [1000, 2000, 3000, 5000, 10000];
+export const BEDS = [
+  { label: 'Any Beds', value: 'any' },
+  { label: '1 + bed', value: '1' },
+  { label: '2 + beds', value: '2' },
+  { label: '3 + beds', value: '3' },
+  { label: '4 + beds', value: '4' },
+];
+export const BATHS = [
+  { label: 'Any Baths', value: 'any' },
+  { label: '1 + bath', value: '1' },
+  { label: '2 + baths', value: '2' },
+  { label: '3 + baths', value: '3' },
+];

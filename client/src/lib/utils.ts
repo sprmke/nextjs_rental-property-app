@@ -1,7 +1,6 @@
 import { clsx, type ClassValue } from 'clsx';
 import { twMerge } from 'tailwind-merge';
 import { toast } from 'sonner';
-import { Manager, Tenant } from '@/types/prismaTypes';
 import { AuthUser } from 'aws-amplify/auth';
 
 export function cn(...inputs: ClassValue[]) {
