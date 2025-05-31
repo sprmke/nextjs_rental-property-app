@@ -101,6 +101,7 @@ const components = {
   },
 };
 
+// auth form fields
 const formFields = {
   signIn: {
     username: {
